@@ -14,7 +14,7 @@ BATCH_SIZE = 1000
 class Agent:
 
     def __init__(self,w,h,newM):
-        self.net = 1
+        self.net = 0
         if self.net == 1:
             numFeat = int(11+w/20*h/20)
         else:
@@ -23,7 +23,7 @@ class Agent:
         self.epsilon = 0 # randomness
         self.gamma = 0.9 # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = Linear_QNet(numFeat, 2048,128, 3,newM)
+        self.model = Linear_QNet(numFeat, 256,64, 3,newM)
         self.trainer = QTrainer(self.model, gamma=self.gamma)
         self.n_games = self.model.n_games
         
@@ -47,31 +47,31 @@ class Agent:
             ((dir_r and game.is_collision(point_r)) or 
             (dir_l and game.is_collision(point_l)) or 
             (dir_u and game.is_collision(point_u)) or 
-            (dir_d and game.is_collision(point_d)))*5,
+            (dir_d and game.is_collision(point_d))),
 
             # Danger right
             ((dir_u and game.is_collision(point_r)) or 
             (dir_d and game.is_collision(point_l)) or 
             (dir_l and game.is_collision(point_u)) or 
-            (dir_r and game.is_collision(point_d)))*5,
+            (dir_r and game.is_collision(point_d))),
 
             # Danger left
             ((dir_d and game.is_collision(point_r)) or 
             (dir_u and game.is_collision(point_l)) or 
             (dir_r and game.is_collision(point_u)) or 
-            (dir_l and game.is_collision(point_d)))*5,
+            (dir_l and game.is_collision(point_d))),
             
             # Move direction
-            dir_l*5,
-            dir_r*5,
-            dir_u*5,
-            dir_d*5,
+            dir_l,
+            dir_r,
+            dir_u,
+            dir_d,
             
             # Food location 
-            (game.food.x < game.head.x)*10,  # food left
-            (game.food.x > game.head.x)*10,  # food right
-            (game.food.y < game.head.y)*10,  # food up
-            (game.food.y > game.head.y)*10  # food down
+            (game.food.x < game.head.x),  # food left
+            (game.food.x > game.head.x),  # food right
+            (game.food.y < game.head.y),  # food up
+            (game.food.y > game.head.y)  # food down
             ]
         
         if self.net == 1:

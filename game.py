@@ -134,17 +134,17 @@ class SnakeGameAI:
         self.snake.insert(0, self.head)
 
         # 3. check if game over
-        reward = 1/10*self.score
+        reward = 0#1/10*self.score
         game_over = False
         if self.is_collision() or self.frame_iteration > 100*len(self.snake):
             game_over = True
-            reward = -25
+            reward = -10
             #print(reward)
             return reward, game_over, self.score
         distAfter = self.distFood()
         reachFoodNew = self.reachFood()
         if distAfter < distBefore:
-            reward = reward
+            reward = reward+1
         if (reachFoodOld == True) and not(reachFoodNew):
             reward = -10
             print(reward)

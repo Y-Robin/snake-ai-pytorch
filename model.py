@@ -34,7 +34,7 @@ class Linear_QNet:
         model = Sequential() 
         model.add(keras.Input(shape=(self.input_size,)))
         model.add(Dense(hidden_size, activation="relu"))
-        model.add(Dense(hidden_size2, activation="relu"))
+        #model.add(Dense(hidden_size2, activation="relu"))
         model.add(Dense(self.output_size, activation="linear"))
         model.compile(loss="mse",
                      optimizer=Adam(learning_rate=self.learning_rate))
@@ -82,7 +82,7 @@ class QTrainer:
 
             target_f = self.model.predOne(state)
             #print(time.time() - t)
-            target_f[0][action] = target
+            target_f[0][np.argmax(action)] = target
             #print(target_f)
             if i == 0:
                 state = np.array(state,ndmin=2)
